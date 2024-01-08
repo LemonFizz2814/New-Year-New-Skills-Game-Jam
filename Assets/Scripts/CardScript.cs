@@ -10,33 +10,34 @@ public class CardScript : MonoBehaviour
     [SerializeField] private TextMeshPro nameText;
     [SerializeField] private TextMeshPro propertiesText;
 
-    private bool isInHand = true;
+    private bool isInHand = false;
 
     private Animator animator;
     private PlayerHandScript playerHandScript;
-    private CardData cardStruct;
+    private CardData cardData;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
     }
 
-    public void Init(PlayerHandScript _playerHandScript, CardData _cardStruct)
+    public void Init(PlayerHandScript _playerHandScript, CardData _cardData)
     {
         playerHandScript = _playerHandScript;
-        cardStruct = _cardStruct;
+        cardData = _cardData;
+        isInHand = true;
 
         SetText();
     }
 
     public void SetText()
     {
-        nameText.text = cardStruct.cardName;
+        nameText.text = cardData.cardName;
 
         propertiesText.text = "";
-        for (int i = 0; i < cardStruct.cardProperty.Length; i++)
+        for (int i = 0; i < cardData.cardProperties.Length; i++)
         {
-            propertiesText.text += cardStruct.cardProperty[i].ToString() + "\n";
+            propertiesText.text += cardData.cardProperties[i].ToString() + "\n";
         }
     }
 
@@ -45,7 +46,7 @@ public class CardScript : MonoBehaviour
         if (isInHand)
         {
             isInHand = false;
-            playerHandScript.CardSelected();
+            playerHandScript.CardSelected(cardData, gameObject);
         }
     }
     void OnMouseOver()

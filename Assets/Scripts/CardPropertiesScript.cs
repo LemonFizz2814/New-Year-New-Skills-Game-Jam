@@ -11,10 +11,10 @@ public class CardPropertiesScript : MonoBehaviour
     public struct CardData
     {
         public string cardName;
-        public CardProperties[] cardProperty;
+        public CardProperty[] cardProperties;
     }
 
-    public enum CardProperties
+    public enum CardProperty
     {
         Humanoid,
         Fantasy,

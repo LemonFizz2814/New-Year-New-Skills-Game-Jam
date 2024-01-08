@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static CardPropertiesScript;
 
 public class PlayerHandScript : MonoBehaviour
 {
     // public variables
     [Header("Script Reference")]
     [SerializeField] private CardPropertiesScript cardPropertiesScript;
+    [SerializeField] private GameManager gameManager;
     [Space]
     [Header("Prefabs")]
     [SerializeField] private GameObject cardPrefab;
@@ -54,13 +56,19 @@ public class PlayerHandScript : MonoBehaviour
         }
     }
 
-    void DrawCard()
+    public void DrawCard()
     {
         GameObject cardObj = Instantiate(cardPrefab, deckPos.position, Quaternion.identity, hand);
+        cardObj.transform.localEulerAngles = Vector3.zero;
         cardObj.GetComponent<CardScript>().Init(this, cardPropertiesScript.GetRandomCard());
         cards.Add(cardObj);
 
-        for(int i = 0; i < cards.Count; i++)
+        RepositionCards();
+    }
+
+    private void RepositionCards()
+    {
+        for (int i = 0; i < cards.Count; i++)
         {
             float totalSpacing = (cards.Count - 1) * cardSize;
             float startX = -totalSpacing / 2;
@@ -70,8 +78,16 @@ public class PlayerHandScript : MonoBehaviour
         }
     }
 
-    public void CardSelected()
+    public void RemoveCard(GameObject _cardObj)
     {
+        cards.Remove(_cardObj);
+        Destroy(_cardObj);
+        RepositionCards();
+    }
 
+    public void CardSelected(CardData _cardData, GameObject _cardObj)
+    {
+        StartCoroutine(gameManager.CompareCards(_cardData));
+        RemoveCard(_cardObj);
     }
 }
