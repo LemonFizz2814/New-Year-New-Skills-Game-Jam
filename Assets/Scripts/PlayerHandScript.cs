@@ -23,7 +23,7 @@ public class PlayerHandScript : MonoBehaviour
 
     // private variables
     private List<GameObject> cards = new List<GameObject>();
-    private const int totalCards = 5;
+    private const int totalCards = 4;
     private const float cardSize = 1.6f;
 
     private void Start()
@@ -34,8 +34,14 @@ public class PlayerHandScript : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+        StartCoroutine(InitialDraw());
+    }
+
+    IEnumerator InitialDraw()
+    {
         for (int i = 0; i < totalCards; i++)
         {
+            yield return new WaitForSeconds(0.2f);
             DrawCard();
         }
     }
@@ -60,7 +66,9 @@ public class PlayerHandScript : MonoBehaviour
     {
         GameObject cardObj = Instantiate(cardPrefab, deckPos.position, Quaternion.identity, hand);
         cardObj.transform.localEulerAngles = Vector3.zero;
-        cardObj.GetComponent<CardScript>().Init(this, cardPropertiesScript.GetRandomCard());
+
+        cardObj.GetComponent<CardScript>().Init(this, cardPropertiesScript.GetRandomCard(), true);
+
         cards.Add(cardObj);
 
         RepositionCards();
@@ -74,20 +82,24 @@ public class PlayerHandScript : MonoBehaviour
             float startX = -totalSpacing / 2;
 
             float xPos = startX + i * cardSize;
-            cards[i].transform.localPosition = new Vector3(xPos, 0, 0);
+            cards[i].GetComponent<CardScript>().StartLerpToPos(new Vector3(xPos, 0, 0));
+            //cards[i].transform.localPosition = new Vector3(xPos, 0, 0);
         }
     }
 
     public void RemoveCard(GameObject _cardObj)
     {
         cards.Remove(_cardObj);
-        Destroy(_cardObj);
+        //Destroy(_cardObj);
         RepositionCards();
     }
 
     public void CardSelected(CardData _cardData, GameObject _cardObj)
     {
-        StartCoroutine(gameManager.CompareCards(_cardData));
+        StartCoroutine(gameManager.CompareCards(_cardData, _cardObj));
         RemoveCard(_cardObj);
+        gameManager.SetMainCard(_cardObj);
+        _cardObj.transform.SetParent(gameManager.GetMainCardPos());
+        _cardObj.GetComponent<CardScript>().StartLerpToPos(gameManager.GetMainCardPos().position);
     }
 }
