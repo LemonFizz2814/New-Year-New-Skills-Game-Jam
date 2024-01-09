@@ -13,7 +13,7 @@ public class CardScript : MonoBehaviour
     [SerializeField] private TextMeshPro nameText;
     [SerializeField] private TextMeshPro propertiesText;
     [SerializeField] private SpriteRenderer cardSprite;
-    [SerializeField] private SpriteRenderer symbolSprite;
+    //[SerializeField] private SpriteRenderer symbolSprite;
     [Space]
     [Header("Variables")]
     [SerializeField] private float lerpSpeed;
@@ -63,7 +63,7 @@ public class CardScript : MonoBehaviour
     {
         nameText.text = cardData.cardName;
         cardSprite.sprite = cardData.cardSprite;
-        symbolSprite.sprite = symbolSprites[(int)cardData.cardSymbol];
+        //symbolSprite.sprite = symbolSprites[(int)cardData.cardSymbol];
 
         propertiesText.text = "";
         for (int i = 0; i < cardData.cardProperties.Length; i++)
@@ -84,6 +84,7 @@ public class CardScript : MonoBehaviour
         if (isInHand)
         {
             isInHand = false;
+            propertiesText.text = "";
             playerHandScript.CardSelected(cardData, gameObject);
         }
     }
@@ -100,5 +101,14 @@ public class CardScript : MonoBehaviour
         {
             animator.SetBool("HoverOver", false);
         }
+    }
+
+    public CardData GetCardData()
+    {
+        return cardData;
+    }
+    public void SetCardData(CardData _cardData)
+    {
+        cardData = _cardData;
     }
 }

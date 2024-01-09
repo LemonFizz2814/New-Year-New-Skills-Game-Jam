@@ -23,7 +23,7 @@ public class PlayerHandScript : MonoBehaviour
 
     // private variables
     private List<GameObject> cards = new List<GameObject>();
-    private const int totalCards = 4;
+    private const int totalCards = 5;
     private const float cardSize = 1.6f;
 
     private void Start()
@@ -99,7 +99,8 @@ public class PlayerHandScript : MonoBehaviour
         StartCoroutine(gameManager.CompareCards(_cardData, _cardObj));
         RemoveCard(_cardObj);
         gameManager.SetMainCard(_cardObj);
+
         _cardObj.transform.SetParent(gameManager.GetMainCardPos());
-        _cardObj.GetComponent<CardScript>().StartLerpToPos(gameManager.GetMainCardPos().position);
+        _cardObj.GetComponent<CardScript>().StartLerpToPos(gameManager.GetMainCardPos().localPosition);
     }
 }

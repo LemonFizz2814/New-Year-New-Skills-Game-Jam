@@ -6,10 +6,15 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     // public variables
+    [Header("Script Reference")]
+    [SerializeField] private GameManager gameManager;
+    [Space]
+    [Header("Text Reference")]
     [SerializeField] private TextMeshProUGUI totalScoreText;
     [SerializeField] private TextMeshProUGUI matchScoreText;
     [SerializeField] private TextMeshProUGUI matchedText;
     [Space]
+    [Header("Object Reference")]
     [SerializeField] private GameObject winScreen;
 
     private void Start()
@@ -33,5 +38,10 @@ public class UIManager : MonoBehaviour
     public void DisplayWinScreen()
     {
         winScreen.SetActive(true);
+    }
+
+    public void OnEndTurnButtonPressed()
+    {
+
     }
 }

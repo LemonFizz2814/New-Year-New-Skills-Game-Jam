@@ -25,9 +25,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 739346737628980310}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.12, z: -0.8}
-  m_LocalScale: {x: 1.8, y: 0.665, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -0.0015, y: 0.1551, z: -0.8}
+  m_LocalScale: {x: 1.2056956, y: 0.46490696, z: 0.5555556}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 800029504561384124}
   m_RootOrder: 1
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3e6e6fbbd946d0541923f45f4eaa2cf1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 32ae70dfad34e4a56a3f40eaf723f739, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -119,8 +119,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0885, y: 0.4013}
-  m_SizeDelta: {x: 11.2768, y: 3.3676}
+  m_AnchoredPosition: {x: 0.0022, y: 0.40842}
+  m_SizeDelta: {x: 11.8346, y: 2.54204}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &800029503067926915
 MeshRenderer:
@@ -142,7 +142,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 1093237532749869772, guid: e8155e42ecf33cc43977b16d8f834130, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -186,8 +186,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Name of card
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e8155e42ecf33cc43977b16d8f834130, type: 2}
+  m_sharedMaterial: {fileID: 1093237532749869772, guid: e8155e42ecf33cc43977b16d8f834130, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -211,17 +211,17 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18.6
+  m_fontSize: 15.4
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 10
-  m_fontSizeMax: 22
+  m_fontSizeMin: 5
+  m_fontSizeMax: 18
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -3
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 800029503956746937}
   - component: {fileID: 800029503956746936}
   m_Layer: 0
-  m_Name: OutlinePicture
+  m_Name: CardDesign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,9 +281,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 800029503956746918}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.12, z: -0.8}
-  m_LocalScale: {x: 0.90000004, y: 0.45, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0.0001, y: -0.00027, z: -0.8}
+  m_LocalScale: {x: 2.499534, y: 1.6672289, z: 1.47}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 800029504561384124}
   m_RootOrder: 2
@@ -329,7 +329,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b0722648860cf694784f5b4d07a96566, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 894681021460ea049834dbd062c3d6ce, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -390,7 +390,6 @@ MonoBehaviour:
   nameText: {fileID: 800029503067926912}
   propertiesText: {fileID: 6856915196938253985}
   cardSprite: {fileID: 2547354920148770660}
-  symbolSprite: {fileID: 5909051264532246450}
   lerpSpeed: 2
   symbolSprites:
   - {fileID: 21300000, guid: 02c561a76b0aeae4aa0fe7e64134f4e0, type: 3}
@@ -534,7 +533,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6624799853608889968
 Transform:
   m_ObjectHideFlags: 0
@@ -628,7 +627,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9198583750495088113}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.88888884}
+  m_LocalPosition: {x: 0, y: 0, z: -0.6}
   m_LocalScale: {x: 0.06666667, y: 0.04444445, z: 4.444444}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -637,8 +636,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.3013}
-  m_SizeDelta: {x: 13.5, y: 7.7235}
+  m_AnchoredPosition: {x: 0, y: -0.24781}
+  m_SizeDelta: {x: 11.2934, y: 8.29511}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &2310554375491031584
 MeshRenderer:
@@ -660,7 +659,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 1093237532749869772, guid: e8155e42ecf33cc43977b16d8f834130, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -710,8 +709,8 @@ MonoBehaviour:
 
     Property'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e8155e42ecf33cc43977b16d8f834130, type: 2}
+  m_sharedMaterial: {fileID: 1093237532749869772, guid: e8155e42ecf33cc43977b16d8f834130, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -735,19 +734,19 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16.9
+  m_fontSize: 16
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 13
-  m_fontSizeMax: 20
+  m_fontSizeMin: 10
+  m_fontSizeMax: 16
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -3
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 18
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0

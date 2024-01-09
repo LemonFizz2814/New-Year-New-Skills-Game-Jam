@@ -26,12 +26,15 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         currentCard = cardPropertiesScript.GetRandomCard();
-        SetMainCard(mainCardPos.GetChild(0).gameObject);
+        mainCard = mainCardPos.GetChild(0).gameObject;
+        mainCard.GetComponent<CardScript>().SetCardData(currentCard);
+        SetMainCard(mainCard);
     }
 
     public void SetMainCard(GameObject _cardObj)
     {
         mainCard = _cardObj;
+        currentCard = mainCard.GetComponent<CardScript>().GetCardData();
         mainCard.GetComponent<CardScript>().Init(playerHandScript, currentCard, false);
     }
 
@@ -46,13 +49,12 @@ public class GameManager : MonoBehaviour
             {
                 if (selectedCardProperty == currentCardProperty)
                 {
-                    Debug.Log($"Matched property! {selectedCardProperty.ToString()}");
                     matchedString += selectedCardProperty.ToString() + "! +1\n";
                     matchScore++;
                 }
             }
         }
-        if(_selectedCardData.cardName.Substring(0) == currentCard.cardName.Substring(0))
+        /*if(_selectedCardData.cardName.Substring(0) == currentCard.cardName.Substring(0))
         {
             Debug.Log($"Matched first letter!");
             matchedString += "First letter! +1\n";
@@ -69,7 +71,7 @@ public class GameManager : MonoBehaviour
             Debug.Log($"Matched card symbols!");
             matchedString += "Card symbols! +1\n";
             matchScore++;
-        }
+        }*/
 
         score += matchScore;
 
@@ -78,7 +80,6 @@ public class GameManager : MonoBehaviour
 
         if(score >= scoreToWin)
         {
-            Debug.Log("You Win!");
             uiManager.DisplayWinScreen();
         }
 
