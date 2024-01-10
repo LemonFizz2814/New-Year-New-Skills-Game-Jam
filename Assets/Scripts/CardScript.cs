@@ -27,6 +27,7 @@ public class CardScript : MonoBehaviour
 
     private Animator animator;
     private PlayerHandScript playerHandScript;
+    private GameManager gameManager;
     private CardData cardData;
 
     void Start()
@@ -45,9 +46,10 @@ public class CardScript : MonoBehaviour
         }
     }
 
-    public void Init(PlayerHandScript _playerHandScript, CardData _cardData, bool _setRandomSymbol)
+    public void Init(PlayerHandScript _playerHandScript, GameManager _gameManager, CardData _cardData, bool _setRandomSymbol)
     {
         playerHandScript = _playerHandScript;
+        gameManager = _gameManager;
         cardData = _cardData;
         isInHand = true;
 
@@ -81,7 +83,7 @@ public class CardScript : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (isInHand)
+        if (isInHand && gameManager.GetPlayersTurn())
         {
             isInHand = false;
             propertiesText.text = "";
@@ -90,19 +92,24 @@ public class CardScript : MonoBehaviour
     }
     void OnMouseOver()
     {
-        if (isInHand)
+        if (isInHand && gameManager.GetPlayersTurn())
         {
             animator.SetBool("HoverOver", true);
         }
     }
     private void OnMouseExit()
     {
-        if (isInHand)
+        if (isInHand && gameManager.GetPlayersTurn())
         {
             animator.SetBool("HoverOver", false);
         }
     }
 
+    public void SetIsInHand(bool _isInHand)
+    {
+        isInHand = _isInHand;
+        animator.SetBool("HoverOver", false);
+    }
     public CardData GetCardData()
     {
         return cardData;

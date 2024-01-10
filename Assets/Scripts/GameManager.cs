@@ -18,38 +18,42 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float drawWaitTime;
 
     // private variables
-    private GameObject mainCard;
-    private CardData currentCard;
+    private GameObject mainCardObj;
+    private CardData currentCardData;
+    private bool playersTurn;
     private int score = 0;
     private const int scoreToWin = 50;
 
     private void Start()
     {
-        currentCard = cardPropertiesScript.GetRandomCard();
-        mainCard = mainCardPos.GetChild(0).gameObject;
-        mainCard.GetComponent<CardScript>().SetCardData(currentCard);
-        SetMainCard(mainCard);
+        mainCardObj = mainCardPos.GetChild(0).gameObject;
+        mainCardObj.GetComponent<CardScript>().SetIsInHand(false);
+        mainCardObj.GetComponent<CardScript>().SetCardData(cardPropertiesScript.GetRandomCard());
+        SetMainCard(mainCardObj);
+
+        playersTurn = true;
     }
 
     public void SetMainCard(GameObject _cardObj)
     {
-        mainCard = _cardObj;
-        currentCard = mainCard.GetComponent<CardScript>().GetCardData();
-        mainCard.GetComponent<CardScript>().Init(playerHandScript, currentCard, false);
+        mainCardObj = _cardObj;
+        currentCardData = mainCardObj.GetComponent<CardScript>().GetCardData();
+        mainCardObj.GetComponent<CardScript>().Init(playerHandScript, this, currentCardData, false);
+        mainCardObj.GetComponent<Animator>().SetTrigger("SetMainCard");
     }
 
     public IEnumerator CompareCards(CardData _selectedCardData, GameObject _cardObj)
     {
         int matchScore = 0;
-        string matchedString = "";
+        List<string> matchedString = new List<string>();
 
         foreach(CardProperty selectedCardProperty in _selectedCardData.cardProperties)
         {
-            foreach (CardProperty currentCardProperty in currentCard.cardProperties)
+            foreach (CardProperty currentCardProperty in currentCardData.cardProperties)
             {
                 if (selectedCardProperty == currentCardProperty)
                 {
-                    matchedString += selectedCardProperty.ToString() + "! +1\n";
+                    matchedString.Add(selectedCardProperty.ToString() + "! +1\n");
                     matchScore++;
                 }
             }
@@ -73,6 +77,13 @@ public class GameManager : MonoBehaviour
             matchScore++;
         }*/
 
+        // punish if no matches found
+        if(matchScore == 0)
+        {
+            matchScore = -5;
+            matchedString.Add("No matches found! -5");
+        }
+
         score += matchScore;
 
         uiManager.SetScoreText(score, matchScore, matchedString);
@@ -85,7 +96,7 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.4f);
 
-        currentCard = _selectedCardData;
+        currentCardData = _selectedCardData;
 
         yield return new WaitForSeconds(drawWaitTime);
         playerHandScript.DrawCard();
@@ -94,5 +105,13 @@ public class GameManager : MonoBehaviour
     public Transform GetMainCardPos()
     {
         return mainCardPos;
+    }
+    public GameObject GetMainCard()
+    {
+        return mainCardObj;
+    }
+    public bool GetPlayersTurn()
+    {
+        return playersTurn;
     }
 }

@@ -16,18 +16,34 @@ public class UIManager : MonoBehaviour
     [Space]
     [Header("Object Reference")]
     [SerializeField] private GameObject winScreen;
+    [SerializeField] private GameObject gameOverScreen;
+    [Space]
+    [Header("Variables")]
+    [SerializeField] private float matchTextWait;
 
     private void Start()
     {
-        SetScoreText(0, 0, "");
+        SetScoreText(0, 0, new List<string>());
         winScreen.SetActive(false);
     }
 
-    public void SetScoreText(int _score, int _matchScore, string _matchedText)
+    public void SetScoreText(int _score, int _matchScore, List<string> _matchedText)
     {
-        totalScoreText.text = "Total score: " + _score;
+        totalScoreText.text = "Score: " + _score;
         matchScoreText.text = "Match score: " + _matchScore;
-        matchedText.text = _matchedText;
+
+        StartCoroutine(DisplayMatchedText(_matchedText));
+    }
+
+    IEnumerator DisplayMatchedText(List<string> _matchedText)
+    {
+        matchedText.text = "";
+
+        for (int i = 0; i < _matchedText.Count; i++)
+        {
+            yield return new WaitForSeconds(matchTextWait);
+            matchedText.text += _matchedText[i];
+        }
     }
 
     public void AnimateScore()

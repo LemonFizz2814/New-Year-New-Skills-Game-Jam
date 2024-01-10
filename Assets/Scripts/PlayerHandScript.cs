@@ -67,7 +67,7 @@ public class PlayerHandScript : MonoBehaviour
         GameObject cardObj = Instantiate(cardPrefab, deckPos.position, Quaternion.identity, hand);
         cardObj.transform.localEulerAngles = Vector3.zero;
 
-        cardObj.GetComponent<CardScript>().Init(this, cardPropertiesScript.GetRandomCard(), true);
+        cardObj.GetComponent<CardScript>().Init(this, gameManager, cardPropertiesScript.GetRandomCard(), true);
 
         cards.Add(cardObj);
 
@@ -97,10 +97,12 @@ public class PlayerHandScript : MonoBehaviour
     public void CardSelected(CardData _cardData, GameObject _cardObj)
     {
         StartCoroutine(gameManager.CompareCards(_cardData, _cardObj));
-        RemoveCard(_cardObj);
-        gameManager.SetMainCard(_cardObj);
 
         _cardObj.transform.SetParent(gameManager.GetMainCardPos());
-        _cardObj.GetComponent<CardScript>().StartLerpToPos(gameManager.GetMainCardPos().localPosition);
+        _cardObj.GetComponent<CardScript>().StartLerpToPos(Vector3.zero);
+
+        RemoveCard(_cardObj);
+        Destroy(gameManager.GetMainCard(), 0.5f);
+        gameManager.SetMainCard(_cardObj);
     }
 }

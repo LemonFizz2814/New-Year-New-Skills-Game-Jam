@@ -22,7 +22,7 @@ public class CardPropertiesScript : MonoBehaviour
         Humanoid,
         Fantasy,
         Red,
-        French,
+        Fast,
         Building,
         Edible,
         Sharp,
@@ -47,7 +47,6 @@ public class CardPropertiesScript : MonoBehaviour
         White,
         Round,
         Long,
-        Fast,
     }
 
     public enum CardSymbol
