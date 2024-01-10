@@ -13,7 +13,6 @@ public class CardPropertiesScript : MonoBehaviour
         public string cardName;
         public Sprite cardSprite;
         public CardProperty[] cardProperties;
-        [NonSerialized] public CardSymbol cardSymbol;
     }
 
     public enum CardProperty
@@ -43,18 +42,10 @@ public class CardPropertiesScript : MonoBehaviour
         Famous,
         Detailed,
         Blue,
-        Water,
+        Flight,
         White,
         Round,
         Long,
-    }
-
-    public enum CardSymbol
-    {
-        Spade,
-        Heart,
-        Diamond,
-        Club,
     }
 
     public CardData GetRandomCard()

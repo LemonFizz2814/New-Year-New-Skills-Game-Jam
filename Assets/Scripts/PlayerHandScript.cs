@@ -67,7 +67,9 @@ public class PlayerHandScript : MonoBehaviour
         GameObject cardObj = Instantiate(cardPrefab, deckPos.position, Quaternion.identity, hand);
         cardObj.transform.localEulerAngles = Vector3.zero;
 
-        cardObj.GetComponent<CardScript>().Init(this, gameManager, cardPropertiesScript.GetRandomCard(), true);
+        CardScript cardScript = cardObj.GetComponent<CardScript>();
+        cardScript.Init(this, gameManager, cardPropertiesScript.GetRandomCard());
+        cardScript.SetIsInHand(true);
 
         cards.Add(cardObj);
 

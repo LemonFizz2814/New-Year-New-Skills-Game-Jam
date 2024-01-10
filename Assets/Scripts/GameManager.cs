@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CardPropertiesScript cardPropertiesScript;
     [SerializeField] private PlayerHandScript playerHandScript;
     [SerializeField] private UIManager uiManager;
+    [SerializeField] private AIScript aiScript;
     [Space]
     [Header("Object Reference")]
     [SerializeField] private Transform mainCardPos;
@@ -28,18 +29,31 @@ public class GameManager : MonoBehaviour
     {
         mainCardObj = mainCardPos.GetChild(0).gameObject;
         mainCardObj.GetComponent<CardScript>().SetIsInHand(false);
-        mainCardObj.GetComponent<CardScript>().SetCardData(cardPropertiesScript.GetRandomCard());
-        SetMainCard(mainCardObj);
 
-        playersTurn = true;
+        TurnStart();
+
+        aiScript.Init(this);
     }
 
     public void SetMainCard(GameObject _cardObj)
     {
         mainCardObj = _cardObj;
         currentCardData = mainCardObj.GetComponent<CardScript>().GetCardData();
-        mainCardObj.GetComponent<CardScript>().Init(playerHandScript, this, currentCardData, false);
+        mainCardObj.GetComponent<CardScript>().Init(playerHandScript, this, currentCardData);
         mainCardObj.GetComponent<Animator>().SetTrigger("SetMainCard");
+    }
+
+    public void TurnOver()
+    {
+        playersTurn = false;
+        StartCoroutine(aiScript.AIsTurn());
+    }
+    public void TurnStart()
+    {
+        playersTurn = true;
+
+        mainCardObj.GetComponent<CardScript>().SetCardData(cardPropertiesScript.GetRandomCard());
+        SetMainCard(mainCardObj);
     }
 
     public IEnumerator CompareCards(CardData _selectedCardData, GameObject _cardObj)
@@ -86,7 +100,7 @@ public class GameManager : MonoBehaviour
 
         score += matchScore;
 
-        uiManager.SetScoreText(score, matchScore, matchedString);
+        uiManager.SetScoreText(score, 0, matchScore, matchedString);
         uiManager.AnimateScore();
 
         if(score >= scoreToWin)
@@ -113,5 +127,9 @@ public class GameManager : MonoBehaviour
     public bool GetPlayersTurn()
     {
         return playersTurn;
+    }
+    public int GetScoreToWin()
+    {
+        return scoreToWin;
     }
 }

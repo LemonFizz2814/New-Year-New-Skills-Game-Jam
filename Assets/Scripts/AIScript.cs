@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AIScript : MonoBehaviour
 {
+    [SerializeField] private float turnTime;
+
     private GameManager gameManager;
     private int score;
 
@@ -12,8 +14,10 @@ public class AIScript : MonoBehaviour
         gameManager = _gameManager;
     }
 
-    public void AIsTurn()
+    public IEnumerator AIsTurn()
     {
         score += Random.Range(0, 4);
+        yield return new WaitForSeconds(turnTime);
+        gameManager.TurnStart();
     }
 }

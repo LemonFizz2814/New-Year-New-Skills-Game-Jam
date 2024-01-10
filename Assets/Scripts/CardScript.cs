@@ -17,7 +17,6 @@ public class CardScript : MonoBehaviour
     [Space]
     [Header("Variables")]
     [SerializeField] private float lerpSpeed;
-    [SerializeField] private Sprite[] symbolSprites;
 
     // private variables
     private bool isInHand = false;
@@ -46,17 +45,11 @@ public class CardScript : MonoBehaviour
         }
     }
 
-    public void Init(PlayerHandScript _playerHandScript, GameManager _gameManager, CardData _cardData, bool _setRandomSymbol)
+    public void Init(PlayerHandScript _playerHandScript, GameManager _gameManager, CardData _cardData)
     {
         playerHandScript = _playerHandScript;
         gameManager = _gameManager;
         cardData = _cardData;
-        isInHand = true;
-
-        if(_setRandomSymbol)
-        {
-            cardData.cardSymbol = (CardSymbol)UnityEngine.Random.Range(0, Enum.GetValues(typeof(CardSymbol)).Length);
-        }
 
         SetComponents();
     }
