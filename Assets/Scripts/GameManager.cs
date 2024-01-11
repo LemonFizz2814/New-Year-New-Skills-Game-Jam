@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using static CardPropertiesScript;
 
@@ -100,7 +101,7 @@ public class GameManager : MonoBehaviour
 
         score += matchScore;
 
-        uiManager.SetScoreText(score, 0, matchScore, matchedString);
+        uiManager.SetScoreText(score, matchScore, matchedString);
         uiManager.AnimateScore();
 
         if (score >= scoreToWin)
@@ -129,5 +130,14 @@ public class GameManager : MonoBehaviour
     public int GetScoreToWin()
     {
         return scoreToWin;
+    }
+
+    public void QuitPressed()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+    public void RestartPressed()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

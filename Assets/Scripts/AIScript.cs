@@ -22,6 +22,8 @@ public class AIScript : MonoBehaviour
         score += Random.Range(0, 4);
         yield return new WaitForSeconds(turnTime);
 
+        uiManager.SetAIScoreText(score);
+
         if (score >= gameManager.GetScoreToWin())
         {
             uiManager.DisplayGameoverScreen();

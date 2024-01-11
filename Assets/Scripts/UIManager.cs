@@ -33,23 +33,28 @@ public class UIManager : MonoBehaviour
         scoreSlider.maxValue = gameManager.GetScoreToWin();
         aiScoreSlider.maxValue = gameManager.GetScoreToWin();
         scoreToWinText.text = gameManager.GetScoreToWin() + " to win";
-        SetScoreText(0, 0, 0, new List<string>());
-        winScreen.SetActive(false);
+        SetScoreText(0, 0, new List<string>());
+        SetAIScoreText(0);
 
+        winScreen.SetActive(false);
         aiTurnScreen.SetActive(true);
         yourTurnScreen.SetActive(true);
     }
 
-    public void SetScoreText(int _score, int _aiScore, int _matchScore, List<string> _matchedText)
+    public void SetScoreText(int _score, int _matchScore, List<string> _matchedText)
     {
         playerScoreText.text = "Score: " + _score;
-        aiScoreText.text     = "Score: " + _aiScore;
         scoreSlider.value    = _score;
-        aiScoreSlider.value  = _aiScore;
 
         matchScoreText.text = "+" + _matchScore;
 
         StartCoroutine(DisplayMatchedText(_matchedText));
+    }
+
+    public void SetAIScoreText(int _aiScore)
+    {
+        aiScoreSlider.value = _aiScore;
+        aiScoreText.text = "Score: " + _aiScore;
     }
 
     IEnumerator DisplayMatchedText(List<string> _matchedText)
