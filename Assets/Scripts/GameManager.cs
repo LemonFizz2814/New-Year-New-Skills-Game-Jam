@@ -14,16 +14,16 @@ public class GameManager : MonoBehaviour
     [Space]
     [Header("Object Reference")]
     [SerializeField] private Transform mainCardPos;
-    [Space]
-    [Header("Variables")]
-    [SerializeField] private float drawWaitTime;
+    //[Space]
+    //[Header("Variables")]
+    //[SerializeField] private float drawWaitTime;
 
     // private variables
     private GameObject mainCardObj;
     private CardData currentCardData;
     private bool playersTurn;
     private int score = 0;
-    private const int scoreToWin = 50;
+    private const int scoreToWin = 25;
 
     private void Start()
     {
@@ -40,13 +40,14 @@ public class GameManager : MonoBehaviour
         mainCardObj = _cardObj;
         currentCardData = mainCardObj.GetComponent<CardScript>().GetCardData();
         mainCardObj.GetComponent<CardScript>().Init(playerHandScript, this, currentCardData);
-        mainCardObj.GetComponent<Animator>().SetTrigger("SetMainCard");
+        mainCardObj.GetComponent<Animator>().SetBool("SetMainCard", true);
     }
 
     public void TurnOver()
     {
         playersTurn = false;
         StartCoroutine(aiScript.AIsTurn());
+        uiManager.DisplayAITurnScreen();
     }
     public void TurnStart()
     {
@@ -54,11 +55,15 @@ public class GameManager : MonoBehaviour
 
         mainCardObj.GetComponent<CardScript>().SetCardData(cardPropertiesScript.GetRandomCard());
         SetMainCard(mainCardObj);
+
+        StartCoroutine(playerHandScript.CheckDrawCards());
+        uiManager.DisplayYourTurnScreen();
     }
 
-    public IEnumerator CompareCards(CardData _selectedCardData, GameObject _cardObj)
+    public void CompareCards(CardData _selectedCardData, GameObject _cardObj)
     {
         int matchScore = 0;
+        bool turnOver = false;
         List<string> matchedString = new List<string>();
 
         foreach(CardProperty selectedCardProperty in _selectedCardData.cardProperties)
@@ -83,12 +88,6 @@ public class GameManager : MonoBehaviour
             Debug.Log($"Matched name length!");
             matchedString += "Name length! +1\n";
             matchScore++;
-        }
-        if(_selectedCardData.cardSymbol == currentCard.cardSymbol)
-        {
-            Debug.Log($"Matched card symbols!");
-            matchedString += "Card symbols! +1\n";
-            matchScore++;
         }*/
 
         // punish if no matches found
@@ -96,6 +95,7 @@ public class GameManager : MonoBehaviour
         {
             matchScore = -5;
             matchedString.Add("No matches found! -5");
+            turnOver = true;
         }
 
         score += matchScore;
@@ -103,17 +103,15 @@ public class GameManager : MonoBehaviour
         uiManager.SetScoreText(score, 0, matchScore, matchedString);
         uiManager.AnimateScore();
 
-        if(score >= scoreToWin)
+        if (score >= scoreToWin)
         {
             uiManager.DisplayWinScreen();
         }
 
-        yield return new WaitForSeconds(0.4f);
-
-        currentCardData = _selectedCardData;
-
-        yield return new WaitForSeconds(drawWaitTime);
-        playerHandScript.DrawCard();
+        if(turnOver)
+        {
+            TurnOver();
+        }
     }
 
     public Transform GetMainCardPos()

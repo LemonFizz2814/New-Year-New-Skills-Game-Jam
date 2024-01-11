@@ -18,6 +18,9 @@ public class PlayerHandScript : MonoBehaviour
     [SerializeField] private Transform hand;
     [SerializeField] private Transform deckPos;
     [Space]
+    [Header("Variables")]
+    [SerializeField] private float drawWaitTime;
+    [Space]
     [Header("Debugging")]
     [SerializeField] private bool isDebugging;
 
@@ -33,15 +36,14 @@ public class PlayerHandScript : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
-        StartCoroutine(InitialDraw());
     }
 
-    IEnumerator InitialDraw()
+    public IEnumerator CheckDrawCards()
     {
-        for (int i = 0; i < totalCards; i++)
+        int total = totalCards - cards.Count;
+        for (int i = 0; i < total; i++)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(drawWaitTime);
             DrawCard();
         }
     }
@@ -98,7 +100,7 @@ public class PlayerHandScript : MonoBehaviour
 
     public void CardSelected(CardData _cardData, GameObject _cardObj)
     {
-        StartCoroutine(gameManager.CompareCards(_cardData, _cardObj));
+        gameManager.CompareCards(_cardData, _cardObj);
 
         _cardObj.transform.SetParent(gameManager.GetMainCardPos());
         _cardObj.GetComponent<CardScript>().StartLerpToPos(Vector3.zero);

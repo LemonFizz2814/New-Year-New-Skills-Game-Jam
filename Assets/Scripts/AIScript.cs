@@ -5,6 +5,7 @@ using UnityEngine;
 public class AIScript : MonoBehaviour
 {
     [SerializeField] private float turnTime;
+    [SerializeField] private UIManager uiManager;
 
     private GameManager gameManager;
     private int score;
@@ -16,8 +17,18 @@ public class AIScript : MonoBehaviour
 
     public IEnumerator AIsTurn()
     {
+        Debug.Log("AI's turn");
+
         score += Random.Range(0, 4);
         yield return new WaitForSeconds(turnTime);
-        gameManager.TurnStart();
+
+        if (score >= gameManager.GetScoreToWin())
+        {
+            uiManager.DisplayGameoverScreen();
+        }
+        else
+        {
+            gameManager.TurnStart();
+        }
     }
 }

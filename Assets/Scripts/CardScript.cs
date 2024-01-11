@@ -29,7 +29,7 @@ public class CardScript : MonoBehaviour
     private GameManager gameManager;
     private CardData cardData;
 
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
     }
