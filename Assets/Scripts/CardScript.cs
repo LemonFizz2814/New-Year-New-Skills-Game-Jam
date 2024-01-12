@@ -13,6 +13,7 @@ public class CardScript : MonoBehaviour
     [SerializeField] private TextMeshPro nameText;
     [SerializeField] private TextMeshPro propertiesText;
     [SerializeField] private SpriteRenderer cardSprite;
+    [SerializeField] private GameObject propertiesSprite;
     //[SerializeField] private SpriteRenderer symbolSprite;
     [Space]
     [Header("Variables")]
@@ -32,6 +33,7 @@ public class CardScript : MonoBehaviour
     void Awake()
     {
         animator = GetComponent<Animator>();
+        propertiesSprite.SetActive(false);
     }
 
     private void Update()
@@ -78,8 +80,8 @@ public class CardScript : MonoBehaviour
     {
         if (isInHand && gameManager.GetPlayersTurn())
         {
-            isInHand = false;
-            propertiesText.text = "";
+            SetIsInHand(false);
+            propertiesSprite.SetActive(!isInHand);
             playerHandScript.CardSelected(cardData, gameObject);
         }
     }
@@ -102,6 +104,8 @@ public class CardScript : MonoBehaviour
     {
         isInHand = _isInHand;
         animator.SetBool("HoverOver", false);
+        propertiesText.gameObject.SetActive(isInHand);
+        propertiesSprite.SetActive(!isInHand);
     }
     public CardData GetCardData()
     {

@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     // private variables
     private GameObject mainCardObj;
     private CardData currentCardData;
+    private List<CardProperty> previousCardProperties = new List<CardProperty>();
     private bool playersTurn;
     private int score = 0;
     private const int scoreToWin = 25;
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
         mainCardObj = mainCardPos.GetChild(0).gameObject;
         mainCardObj.GetComponent<CardScript>().SetIsInHand(false);
 
-        TurnStart();
+        TurnStart(cardPropertiesScript.GetRandomCard());
 
         aiScript.Init(this);
     }
@@ -47,14 +48,15 @@ public class GameManager : MonoBehaviour
     public void TurnOver()
     {
         playersTurn = false;
-        StartCoroutine(aiScript.AIsTurn());
+        previousCardProperties.Clear();
+        StartCoroutine(aiScript.AIsTurn(currentCardData));
         uiManager.DisplayAITurnScreen();
     }
-    public void TurnStart()
+    public void TurnStart(CardData _cardData)
     {
         playersTurn = true;
 
-        mainCardObj.GetComponent<CardScript>().SetCardData(cardPropertiesScript.GetRandomCard());
+        mainCardObj.GetComponent<CardScript>().SetCardData(_cardData);
         SetMainCard(mainCardObj);
 
         StartCoroutine(playerHandScript.CheckDrawCards());
@@ -67,29 +69,18 @@ public class GameManager : MonoBehaviour
         bool turnOver = false;
         List<string> matchedString = new List<string>();
 
-        foreach(CardProperty selectedCardProperty in _selectedCardData.cardProperties)
+        foreach (CardProperty selectedCardProperty in _selectedCardData.cardProperties)
         {
             foreach (CardProperty currentCardProperty in currentCardData.cardProperties)
             {
                 if (selectedCardProperty == currentCardProperty)
                 {
-                    matchedString.Add(selectedCardProperty.ToString() + "! +1\n");
-                    matchScore++;
+                    int comboScore = CheckCombo(selectedCardProperty);
+                    matchedString.Add(selectedCardProperty.ToString() + "! +" + (1 + comboScore) + "\n");
+                    matchScore += 1 + comboScore;
                 }
             }
         }
-        /*if(_selectedCardData.cardName.Substring(0) == currentCard.cardName.Substring(0))
-        {
-            Debug.Log($"Matched first letter!");
-            matchedString += "First letter! +1\n";
-            matchScore++;
-        }
-        if(_selectedCardData.cardName.Length == currentCard.cardName.Length)
-        {
-            Debug.Log($"Matched name length!");
-            matchedString += "Name length! +1\n";
-            matchScore++;
-        }*/
 
         // punish if no matches found
         if(matchScore == 0)
@@ -113,6 +104,20 @@ public class GameManager : MonoBehaviour
         {
             TurnOver();
         }
+    }
+
+    int CheckCombo(CardProperty _selectedCardProperty)
+    {
+        /*foreach(CardProperty previosCardProperty in previousCardProperties)
+        {
+            if (_selectedCardProperty == previosCardProperty)
+            {
+                return 1;
+            }
+        }
+
+        previousCardProperties.Add(_selectedCardProperty);*/
+        return 0;
     }
 
     public Transform GetMainCardPos()
