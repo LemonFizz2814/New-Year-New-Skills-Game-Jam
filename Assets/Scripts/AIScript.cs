@@ -10,8 +10,11 @@ public class AIScript : MonoBehaviour
     [SerializeField] private CardPropertiesScript cardPropertiesScript;
 
     private List<CardData> cards = new List<CardData>();
+    private List<string> matchedString = new List<string>();
     private GameManager gameManager;
     private int score;
+    private int matchScore;
+    private CardData selectedCard;
 
     public void Init(GameManager _gameManager)
     {
@@ -25,17 +28,24 @@ public class AIScript : MonoBehaviour
 
     public IEnumerator AIsTurn(CardData _currentCardData)
     {
-        Debug.Log("AI's turn");
+        matchScore = 0;
+        matchedString.Clear();
+
+        selectedCard = _currentCardData;
 
         yield return new WaitForSeconds(turnTime);
-        CardData selectedCard = CheckCards(_currentCardData);
-        yield return new WaitForSeconds(1.0f);
 
-        uiManager.SetAIScoreText(score);
+        while (CheckCards(_currentCardData))
+        {
+            gameManager.AISetMainCard(selectedCard);
+
+            uiManager.SetAIScoreText(score, matchScore, matchedString);
+            yield return new WaitForSeconds(turnTime);
+        }
 
         if (score >= gameManager.GetScoreToWin())
         {
-            uiManager.DisplayGameoverScreen();
+            uiManager.DisplayGameoverScreen(gameManager.GetScore(), score);
         }
         else
         {
@@ -43,7 +53,7 @@ public class AIScript : MonoBehaviour
         }
     }
 
-    CardData CheckCards(CardData _currentCardData)
+    bool CheckCards(CardData _currentCardData)
     {
         foreach(CardData cardData in cards)
         {
@@ -53,15 +63,17 @@ public class AIScript : MonoBehaviour
                 {
                     if (selectedCardProperty == currentCardProperty)
                     {
-                        score += GetCardScore(cardData.cardProperties, _currentCardData.cardProperties);
-                        return cardData;
+                        matchScore = GetCardScore(cardData.cardProperties, _currentCardData.cardProperties);
+                        score += matchScore;
+                        selectedCard = cardData;
+                        return true;
                     }
                 }
             }
         }
 
         Debug.Log("Couldn't find any");
-        return _currentCardData;
+        return false;
     }
 
     int GetCardScore(CardProperty[] _cardData, CardProperty[] _currentCardData)
@@ -73,11 +85,17 @@ public class AIScript : MonoBehaviour
             {
                 if (selectedCardProperty == currentCardProperty)
                 {
+                    matchedString.Add(selectedCardProperty.ToString() + "! +1 \n");
                     count++;
                 }
             }
         }
 
         return count;
+    }
+
+    public int GetScore()
+    {
+        return score;
     }
 }

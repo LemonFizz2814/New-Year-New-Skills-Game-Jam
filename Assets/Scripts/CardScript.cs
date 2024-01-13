@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static CardPropertiesScript;
 using TMPro;
 using Unity.VisualScripting;
 using System;
+using static CardPropertiesScript;
+using static SoundManager;
 
 public class CardScript : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class CardScript : MonoBehaviour
     private Animator animator;
     private PlayerHandScript playerHandScript;
     private GameManager gameManager;
+    private SoundManager soundManager;
     private CardData cardData;
 
     void Awake()
@@ -47,10 +49,11 @@ public class CardScript : MonoBehaviour
         }
     }
 
-    public void Init(PlayerHandScript _playerHandScript, GameManager _gameManager, CardData _cardData)
+    public void Init(PlayerHandScript _playerHandScript, GameManager _gameManager, SoundManager _soundManager, CardData _cardData)
     {
         playerHandScript = _playerHandScript;
         gameManager = _gameManager;
+        soundManager = _soundManager;
         cardData = _cardData;
 
         SetComponents();
@@ -78,23 +81,25 @@ public class CardScript : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (isInHand && gameManager.GetPlayersTurn())
+        if (isInHand && gameManager.GetPlayersTurn() && !gameManager.IsGameOver())
         {
             SetIsInHand(false);
+            soundManager.PlaySound(SoundType.PlayCard);
             propertiesSprite.SetActive(!isInHand);
             playerHandScript.CardSelected(cardData, gameObject);
         }
     }
     void OnMouseOver()
     {
-        if (isInHand && gameManager.GetPlayersTurn())
+        if (isInHand && gameManager.GetPlayersTurn() && !gameManager.IsGameOver())
         {
             animator.SetBool("HoverOver", true);
+            soundManager.PlaySound(SoundType.CardHover);
         }
     }
     private void OnMouseExit()
     {
-        if (isInHand && gameManager.GetPlayersTurn())
+        if (isInHand && gameManager.GetPlayersTurn() && !gameManager.IsGameOver())
         {
             animator.SetBool("HoverOver", false);
         }

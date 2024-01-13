@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 using static CardPropertiesScript;
+using static SoundManager;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerHandScript playerHandScript;
     [SerializeField] private UIManager uiManager;
     [SerializeField] private AIScript aiScript;
+    [SerializeField] private SoundManager soundManager;
     [Space]
     [Header("Object Reference")]
     [SerializeField] private Transform mainCardPos;
@@ -23,37 +24,48 @@ public class GameManager : MonoBehaviour
     private GameObject mainCardObj;
     private CardData currentCardData;
     private List<CardProperty> previousCardProperties = new List<CardProperty>();
+
     private bool playersTurn;
+    private bool gameOver = false;
     private int score = 0;
     private const int scoreToWin = 25;
 
     private void Start()
     {
+        uiManager.ShowEndTurnButton(false);
+        aiScript.Init(this);
+    }
+
+    public void BeginGame()
+    {
         mainCardObj = mainCardPos.GetChild(0).gameObject;
         mainCardObj.GetComponent<CardScript>().SetIsInHand(false);
 
         TurnStart(cardPropertiesScript.GetRandomCard());
-
-        aiScript.Init(this);
     }
 
     public void SetMainCard(GameObject _cardObj)
     {
         mainCardObj = _cardObj;
         currentCardData = mainCardObj.GetComponent<CardScript>().GetCardData();
-        mainCardObj.GetComponent<CardScript>().Init(playerHandScript, this, currentCardData);
+        mainCardObj.GetComponent<CardScript>().Init(playerHandScript, this, soundManager, currentCardData);
         mainCardObj.GetComponent<Animator>().SetBool("SetMainCard", true);
     }
 
     public void TurnOver()
     {
+        soundManager.PlaySound(SoundType.NextTurn);
+
         playersTurn = false;
         previousCardProperties.Clear();
         StartCoroutine(aiScript.AIsTurn(currentCardData));
         uiManager.DisplayAITurnScreen();
+        uiManager.ShowEndTurnButton(false);
     }
     public void TurnStart(CardData _cardData)
     {
+        soundManager.PlaySound(SoundType.NextTurn);
+
         playersTurn = true;
 
         mainCardObj.GetComponent<CardScript>().SetCardData(_cardData);
@@ -61,12 +73,13 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(playerHandScript.CheckDrawCards());
         uiManager.DisplayYourTurnScreen();
+        uiManager.ShowEndTurnButton(true);
     }
 
     public void CompareCards(CardData _selectedCardData, GameObject _cardObj)
     {
-        int matchScore = 0;
         bool turnOver = false;
+        int matchScore = 0;
         List<string> matchedString = new List<string>();
 
         foreach (CardProperty selectedCardProperty in _selectedCardData.cardProperties)
@@ -88,6 +101,12 @@ public class GameManager : MonoBehaviour
             matchScore = -5;
             matchedString.Add("No matches found! -5");
             turnOver = true;
+
+            soundManager.PlaySound(SoundType.LosePoint);
+        }
+        else
+        {
+            soundManager.PlaySound(SoundType.ScorePoint);
         }
 
         score += matchScore;
@@ -97,7 +116,7 @@ public class GameManager : MonoBehaviour
 
         if (score >= scoreToWin)
         {
-            uiManager.DisplayWinScreen();
+            uiManager.DisplayWinScreen(score, aiScript.GetScore());
         }
 
         if(turnOver)
@@ -120,6 +139,11 @@ public class GameManager : MonoBehaviour
         return 0;
     }
 
+    public void AISetMainCard(CardData _cardData)
+    {
+        mainCardObj.GetComponent<CardScript>().SetCardData(_cardData);
+    }
+
     public Transform GetMainCardPos()
     {
         return mainCardPos;
@@ -136,13 +160,12 @@ public class GameManager : MonoBehaviour
     {
         return scoreToWin;
     }
-
-    public void QuitPressed()
+    public int GetScore()
     {
-        SceneManager.LoadScene("MainMenu");
+        return score;
     }
-    public void RestartPressed()
+    public bool IsGameOver()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        return gameOver;
     }
 }

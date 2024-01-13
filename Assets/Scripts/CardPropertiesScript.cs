@@ -25,7 +25,7 @@ public class CardPropertiesScript : MonoBehaviour
         Building,
         Edible,
         Sharp,
-        Sweet,
+        Transport,
         Plant,
         Soft,
         Little,
@@ -46,6 +46,7 @@ public class CardPropertiesScript : MonoBehaviour
         White,
         Round,
         Long,
+        Bones,
     }
 
     public CardData GetRandomCard()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static CardPropertiesScript;
+using static SoundManager;
 
 public class PlayerHandScript : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PlayerHandScript : MonoBehaviour
     [Header("Script Reference")]
     [SerializeField] private CardPropertiesScript cardPropertiesScript;
     [SerializeField] private GameManager gameManager;
+    [SerializeField] private SoundManager soundManager;
     [Space]
     [Header("Prefabs")]
     [SerializeField] private GameObject cardPrefab;
@@ -41,6 +43,12 @@ public class PlayerHandScript : MonoBehaviour
     public IEnumerator CheckDrawCards()
     {
         int total = totalCards - cards.Count;
+
+        if(total > 0)
+        {
+            soundManager.PlaySound(SoundType.DrawCards);
+        }
+
         for (int i = 0; i < total; i++)
         {
             yield return new WaitForSeconds(drawWaitTime);
@@ -70,7 +78,7 @@ public class PlayerHandScript : MonoBehaviour
         cardObj.transform.localEulerAngles = Vector3.zero;
 
         CardScript cardScript = cardObj.GetComponent<CardScript>();
-        cardScript.Init(this, gameManager, cardPropertiesScript.GetRandomCard());
+        cardScript.Init(this, gameManager, soundManager, cardPropertiesScript.GetRandomCard());
         cardScript.SetIsInHand(true);
 
         cards.Add(cardObj);
