@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,14 @@ public class GameManager : MonoBehaviour
     private bool playersTurn;
     private bool gameOver = false;
     private int score = 0;
-    private const int scoreToWin = 25;
+    private int[] scoreToWin = new int[2] { 25, 50 };
+    private int difficulty;
+
+    private void Awake()
+    {
+        difficulty = PlayerPrefs.GetInt("Difficulty");
+        Debug.Log($"Difficulty {PlayerPrefs.GetInt("Difficulty")}");
+    }
 
     private void Start()
     {
@@ -106,15 +114,17 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            soundManager.PlaySound(SoundType.ScorePoint);
+            //soundManager.PlaySound(SoundType.ScorePoint);
         }
 
         score += matchScore;
 
+        score = Mathf.Clamp(score, 0, 50);
+
         uiManager.SetScoreText(score, matchScore, matchedString);
         uiManager.AnimateScore();
 
-        if (score >= scoreToWin)
+        if (score >= scoreToWin[difficulty])
         {
             uiManager.DisplayWinScreen(score, aiScript.GetScore());
         }
@@ -141,7 +151,9 @@ public class GameManager : MonoBehaviour
 
     public void AISetMainCard(CardData _cardData)
     {
-        mainCardObj.GetComponent<CardScript>().SetCardData(_cardData);
+        CardScript cardScript = mainCardObj.GetComponent<CardScript>();
+        cardScript.SetCardData(_cardData);
+        cardScript.SetComponents();
     }
 
     public Transform GetMainCardPos()
@@ -158,7 +170,7 @@ public class GameManager : MonoBehaviour
     }
     public int GetScoreToWin()
     {
-        return scoreToWin;
+        return scoreToWin[difficulty];
     }
     public int GetScore()
     {

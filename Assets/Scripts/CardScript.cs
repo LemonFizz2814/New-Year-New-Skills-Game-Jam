@@ -89,7 +89,7 @@ public class CardScript : MonoBehaviour
             playerHandScript.CardSelected(cardData, gameObject);
         }
     }
-    void OnMouseOver()
+    private void OnMouseEnter()
     {
         if (isInHand && gameManager.GetPlayersTurn() && !gameManager.IsGameOver())
         {

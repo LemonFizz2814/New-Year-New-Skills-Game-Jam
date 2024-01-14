@@ -45,6 +45,7 @@ public class UIManager : MonoBehaviour
         SetAIScoreText(0, 0, new List<string>());
 
         winScreen.SetActive(false);
+        gameOverScreen.SetActive(false);
         aiTurnScreen.SetActive(true);
         yourTurnScreen.SetActive(true);
         instructionsScreen.SetActive(true);
@@ -60,8 +61,8 @@ public class UIManager : MonoBehaviour
 
     public void SetAIScoreText(int _aiScore, int _matchScore, List<string> _matchedText)
     {
-        aiScoreSlider.value = _aiScore;
         aiScoreText.text = "Score: " + _aiScore;
+        aiScoreSlider.value = _aiScore;
 
         StartCoroutine(DisplayMatchedText(_matchedText, _matchScore));
     }
@@ -71,6 +72,8 @@ public class UIManager : MonoBehaviour
         matchScoreText.text = "+" + _matchScore;
         matchedText.GetComponent<Animator>().SetTrigger("Show");
         matchedText.text = "";
+
+        Debug.Log($"_matchedText {_matchedText.Count}");
 
         for (int i = 0; i < _matchedText.Count; i++)
         {

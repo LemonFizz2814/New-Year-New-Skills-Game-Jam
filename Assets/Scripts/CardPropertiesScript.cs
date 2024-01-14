@@ -41,12 +41,14 @@ public class CardPropertiesScript : MonoBehaviour
         Yellow,
         Famous,
         Detailed,
-        Blue,
+        Water,
         Flight,
         White,
         Round,
         Long,
-        Bones,
+        Dead,
+        Stripped,
+        Stinky,
     }
 
     public CardData GetRandomCard()
