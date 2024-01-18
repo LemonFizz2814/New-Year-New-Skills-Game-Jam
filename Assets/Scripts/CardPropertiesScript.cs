@@ -49,6 +49,7 @@ public class CardPropertiesScript : MonoBehaviour
         Dead,
         Stripped,
         Stinky,
+        Political,
     }
 
     public CardData GetRandomCard()

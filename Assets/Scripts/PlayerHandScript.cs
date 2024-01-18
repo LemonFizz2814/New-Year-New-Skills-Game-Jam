@@ -86,6 +86,18 @@ public class PlayerHandScript : MonoBehaviour
         RepositionCards();
     }
 
+    public void DiscardAllCards()
+    {
+        for(int i = cards.Count - 1; i >= 0; i--)
+        {
+            Destroy(cards[i]);
+        }
+
+        cards.Clear();
+
+        gameManager.TurnOver();
+    }
+
     private void RepositionCards()
     {
         for (int i = 0; i < cards.Count; i++)
